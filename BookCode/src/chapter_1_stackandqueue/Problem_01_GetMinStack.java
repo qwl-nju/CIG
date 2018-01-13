@@ -77,6 +77,35 @@ public class Problem_01_GetMinStack {
 		}
 	}
 
+	//QWL
+	public static class MyStack3{
+		private Stack<Integer> number = new Stack<>();
+		private Stack<Integer> minNum = new Stack<>();
+		
+		public MyStack3(){}
+		
+		public void push(int num){
+			if(minNum.isEmpty()){
+				minNum.push(num);
+			}else if(num < getMin()){
+				minNum.push(num);
+			}else{
+				int temp = minNum.peek();
+				minNum.push(temp);
+			}
+			number.push(num);
+		}
+		
+		public int pop(){
+			minNum.pop();
+			return number.pop();
+		}
+		
+		public int getMin(){
+			return minNum.peek();
+		}
+	}
+	
 	public static void main(String[] args) {
 		MyStack1 stack1 = new MyStack1();
 		stack1.push(3);
@@ -99,6 +128,18 @@ public class Problem_01_GetMinStack {
 		System.out.println(stack2.getmin());
 		System.out.println(stack2.pop());
 		System.out.println(stack2.getmin());
+		
+		System.out.println("=============");
+
+		MyStack3 stack3 = new MyStack3();
+		stack3.push(3);
+		System.out.println(stack3.getMin());
+		stack3.push(4);
+		System.out.println(stack3.getMin());
+		stack3.push(1);
+		System.out.println(stack3.getMin());
+		System.out.println(stack3.pop());
+		System.out.println(stack3.getMin());
 	}
 
 }

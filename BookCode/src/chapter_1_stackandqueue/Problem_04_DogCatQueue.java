@@ -117,7 +117,125 @@ public class Problem_04_DogCatQueue {
 
 	}
 
+	// QWL
+
+	public static class Petd {
+		private Pet pet;
+		private boolean isVaild;
+
+		public Petd() {
+		}
+
+		public Petd(Pet pet, boolean isVaild) {
+			this.pet = pet;
+			this.isVaild = isVaild;
+		}
+
+		public void setPet(Pet pet) {
+			this.pet = pet;
+		}
+
+		public Pet getPet() {
+			return pet;
+		}
+
+		public boolean isVaild() {
+			return isVaild;
+		}
+
+		public void setVaild(boolean isVaild) {
+			this.isVaild = isVaild;
+		}
+	}
+
+	public static class DogCatQueue2 {
+		private int catCount = 0;
+		private int dogCount = 0;
+		private Queue<Petd> petds = new LinkedList<>();
+
+		public DogCatQueue2() {
+		}
+
+		
+		public int getDogCount() {
+			return dogCount;
+		}
+		
+		public int getCatCount() {
+			return catCount;
+		}
+		
+		public boolean isDogQueueEmpty() {
+			return dogCount <= 0 ? true : false;
+		}
+
+		public boolean isCatQueueEmpty() {
+			return catCount == 0 ? true : false;
+		}
+
+		public boolean isEmpty() {
+			return isCatQueueEmpty() && isDogQueueEmpty();
+		}
+
+		public void add(Pet pet) {
+			if (pet.type.equals("cat")) {
+				this.catCount++;
+			} else if (pet.type.equals("dog")) {
+				this.dogCount++;
+			}
+			petds.add(new Petd(pet, true));
+		}
+
+		public Pet pollAll() {
+			if (isCatQueueEmpty() && isDogQueueEmpty()) {
+				return null;
+			}
+			for (Petd petd : petds) {
+				if (petd.isVaild() && petd.getPet().type.equals("cat")) {
+					this.catCount--;
+					petd.setVaild(false);
+					return petd.getPet();
+				} else if (petd.isVaild() && petd.getPet().type.equals("dog")) {
+					this.dogCount--;
+					petd.setVaild(false);
+					return petd.getPet();
+				}
+			}
+			return null;
+		}
+
+		public Pet pollDog() {
+			if (isDogQueueEmpty()) {
+				return null;
+			}
+			for (Petd petd : petds) {
+				if (petd.isVaild() && petd.getPet().type.equals("dog")) {
+					this.dogCount--;
+					petd.setVaild(false);
+					return petd.getPet();
+				}
+			}
+			return null;
+		}
+
+		public Pet pollCat() {
+			if (isCatQueueEmpty()) {
+				return null;
+			}
+			for (Petd petd : petds) {
+				if (petd.isVaild() && petd.getPet().type.equals("cat")) {
+					this.catCount--;
+					petd.setVaild(false);
+					return petd.getPet();
+				}
+			}
+			return null;
+		}
+
+	}
+
 	public static void main(String[] args) {
+		
 		DogCatQueue test = new DogCatQueue();
 
 		Pet dog1 = new Dog();
@@ -153,6 +271,41 @@ public class Problem_04_DogCatQueue {
 		while (!test.isEmpty()) {
 			System.out.println(test.pollAll().getPetType());
 		}
+		
+		System.out.println("====================================");
+		
+		
+		
+		DogCatQueue2 test2 = new DogCatQueue2();
+
+		test2.add(dog1);
+		test2.add(cat1);
+		test2.add(dog2);
+		test2.add(cat2);
+		test2.add(dog3);
+		test2.add(cat3);
+
+		test2.add(dog1);
+		test2.add(cat1);
+		test2.add(dog2);
+		test2.add(cat2);
+		test2.add(dog3);
+		test2.add(cat3);
+
+		test2.add(dog1);
+		test2.add(cat1);
+		test2.add(dog2);
+		test2.add(cat2);
+		test2.add(dog3);
+		test2.add(cat3);
+		while (!test2.isDogQueueEmpty()) {
+			System.out.println(test2.pollDog().getPetType());
+		}
+		while (!test2.isEmpty()) {
+			System.out.println(test2.pollAll().getPetType());
+		}
+		System.out.println("====================================");
+
 	}
 
 }
