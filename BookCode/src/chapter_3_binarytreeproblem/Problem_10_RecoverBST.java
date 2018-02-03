@@ -1,5 +1,7 @@
 package chapter_3_binarytreeproblem;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 public class Problem_10_RecoverBST {
@@ -233,6 +235,37 @@ public class Problem_10_RecoverBST {
 		}
 		return true;
 	}
+	
+	
+	//QWL
+	public static Node[] getTwoErrNodesQWL(Node head) {
+		Stack<Node> stack = new Stack<>();
+		List<Node> list = new LinkedList<>();
+		while(!stack.isEmpty() || head != null){
+			while(head != null){
+				stack.push(head);
+				head = head.left;
+			}
+			head = stack.pop();
+			list.add(head);
+			head = head.right;
+		}
+		int num = 0;
+		int[] res = new int[2];
+		for(int i = 1; i < list.size(); i++){
+			if(list.get(i).value < list.get(i - 1).value){
+				res[num] = i - 1;
+				num++;
+			}
+		}
+		if(num == 1){
+			return new Node[]{list.get(res[0]),list.get(res[1])};
+		}else if(num == 2){
+			return new Node[]{list.get(res[0]),list.get(res[1] + 1)};
+		}else{
+			return null;
+		}
+	}
 
 	public static void main(String[] args) {
 		Node head = new Node(5);
@@ -244,6 +277,18 @@ public class Problem_10_RecoverBST {
 		head.right.right = new Node(8);
 		head.left.left.left = new Node(1);
 		printTree(head);
+		
+		Node[] err2 = getTwoErrNodes(head);
+		System.out.println("err1: " + err2[0] == null ? "null" : err2[0].value);
+		System.out.println("err2: " + err2[1] == null ? "null" : err2[1].value);
+		System.out.println();
+		
+		
+		Node[] err = getTwoErrNodesQWL(head);
+		System.out.println("err1: " + err[0].value);
+		System.out.println("err2: " + err[1].value);
+		System.out.println();
+		
 		System.out.println(isBST(head));
 
 		// ַי¿צ1, 7 -> e1, 5 -> e2

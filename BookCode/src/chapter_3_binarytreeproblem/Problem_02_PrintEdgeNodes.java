@@ -1,5 +1,9 @@
 package chapter_3_binarytreeproblem;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class Problem_02_PrintEdgeNodes {
 
 	public static class Node {
@@ -98,6 +102,57 @@ public class Problem_02_PrintEdgeNodes {
 		}
 	}
 
+	// QWL
+	public static void printEdgeQWL1(Node head) {
+		if (head == null) {
+			return;
+		}
+		int h = getHeight(head);
+		Node[][] edge = new Node[h][2];
+		setEdge(head, edge, 0);
+
+		for (int i = 0; i < h; i++) {
+			System.out.print(edge[i][0].value + " ");
+		}
+
+		getNoLeftRight(head, edge, 0);
+
+		for (int i = h - 1; i >= 0; i--) {
+			if (edge[i][0] != edge[i][1]) {
+				System.out.print(edge[i][1].value + " ");
+			}
+		}
+	}
+
+	public static void getNoLeftRight(Node head, Node[][] edge, int level) {
+		if (head == null) {
+			return;
+		}
+		if (head != edge[level][0] && head != edge[level][1] && head.left == null && head.right == null) {
+			System.out.print(head.value + " ");
+		}
+		getNoLeftRight(head.left, edge, level + 1);
+		getNoLeftRight(head.right, edge, level + 1);
+	}
+
+	public static void setEdge(Node head, Node[][] edge, int level) {
+		if (head == null) {
+			return;
+		}
+		edge[level][0] = edge[level][0] == null ? head : edge[level][0];
+		edge[level][1] = head;
+		setEdge(head.left, edge, level + 1);
+		setEdge(head.right, edge, level + 1);
+	}
+
+	public static int getHeight(Node h) {
+		if (h == null) {
+			return 0;
+		}
+		return Math.max(getHeight(h.left) + 1, getHeight(h.right) + 1);
+
+	}
+
 	public static void main(String[] args) {
 		Node head = new Node(1);
 		head.left = new Node(2);
@@ -119,6 +174,7 @@ public class Problem_02_PrintEdgeNodes {
 		printEdge1(head);
 		printEdge2(head);
 
+		printEdgeQWL1(head);
 	}
 
 }

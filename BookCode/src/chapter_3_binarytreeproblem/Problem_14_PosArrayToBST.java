@@ -1,5 +1,8 @@
 package chapter_3_binarytreeproblem;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Problem_14_PosArrayToBST {
 
 	public static boolean isPostArray(int[] arr) {
@@ -97,10 +100,56 @@ public class Problem_14_PosArrayToBST {
 		return buf.toString();
 	}
 
+	// QWL
+	public static Node posArrayToBST2(int[] posArr) {
+		if (posArr == null) {
+			return null;
+		}
+		return recover(posArr, 0, posArr.length - 1);
+	}
+
+	public static Node recover(int[] arr, int start, int end) {
+		if (start > end) {
+			return null;
+		}
+		int mid = end - 1;
+		;
+		Node head = new Node(arr[end]);
+		for (int i = start; i < end; i++) {
+			if (arr[i] > arr[end]) {
+				mid = i - 1;
+				break;
+			}
+		}
+		head.left = recover(arr, start, mid);
+		head.right = recover(arr, mid + 1, end - 1);
+		return head;
+	}
+
+	public static boolean isPost2(int[] arr, int start, int end) {
+		if(start > end) return true;
+		int left = start - 1;//я╟ур╫Гоч
+		int right = end;
+		for (int i = start; i < end; i++) {
+			if (arr[i] < arr[end]) {
+				left = i;
+			} else {
+				right = right == end ? i : right;
+			}
+		}
+		if (left + 1 != right) {
+			return false;
+		}
+		return isPost2(arr, start, left) && isPost2(arr, right, end - 1);
+	}
+
 	public static void main(String[] args) {
-		int[] arr = { 2, 1, 3, 6, 5, 7, 4 };
+		int[] arr = { 2, 4, 3, 6, 8, 17, 9 };
 		System.out.println(isPost(arr, 0, arr.length - 1));
 		printTree(posArrayToBST(arr));
+
+		System.out.println(isPost2(arr, 0, arr.length - 1));
+		printTree(posArrayToBST2(arr));
 
 	}
 

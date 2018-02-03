@@ -72,6 +72,22 @@ public class Problem_12_T1SubtreeEqualsT2 {
 		return nextArr;
 	}
 
+	
+	//QWL  ±º‰∏¥‘”∂»O(N*M)
+	public static boolean isSubtree2(Node t1, Node t2) {
+		return isCheck(t1,t2) || ((t1 != null) ? (isSubtree2(t1.left,t2) || isSubtree2(t1.right,t2)) : false);
+	}
+	
+	public static boolean isCheck(Node t1, Node t2){
+		if(t1 == null && t2 == null){
+			return true;
+		}
+		if(t1 != null && t2 != null && t1.value == t2.value){
+			return isCheck(t1.left,t2.left) && isCheck(t1.right,t2.right);
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		Node t1 = new Node(1);
 		t1.left = new Node(2);
@@ -85,11 +101,12 @@ public class Problem_12_T1SubtreeEqualsT2 {
 
 		Node t2 = new Node(2);
 		t2.left = new Node(4);
-		t2.left.right = new Node(8);
+		//t2.left.right = new Node(8);
 		t2.right = new Node(5);
 		t2.right.left = new Node(9);
 
 		System.out.println(isSubtree(t1, t2));
+		System.out.println(isSubtree2(t1, t2));
 
 	}
 

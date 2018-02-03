@@ -32,6 +32,23 @@ public class Problem_11_T1ContainsT2Topology {
 		return check(h.left, t2.left) && check(h.right, t2.right);
 	}
 
+	// QWL
+	public static boolean containsQWL(Node t1, Node t2) {
+	
+		return isCheck(t1, t2) || (t1 == null ? false : (containsQWL(t1.left, t2) || containsQWL(t1.right, t2)));
+	}
+
+	public static boolean isCheck(Node t1, Node t2) {
+		if (t2 == null) {
+			return true;
+		}
+		if (t1 == null || t1.value != t2.value) {
+			return false;
+		}
+
+		return isCheck(t1.left, t2.left) && isCheck(t1.right, t2.right);
+	}
+
 	public static void main(String[] args) {
 		Node t1 = new Node(1);
 		t1.left = new Node(2);
@@ -50,6 +67,8 @@ public class Problem_11_T1ContainsT2Topology {
 		t2.right = new Node(5);
 
 		System.out.println(contains(t1, t2));
+		
+		System.out.println(containsQWL(t1, t2));
 
 	}
 

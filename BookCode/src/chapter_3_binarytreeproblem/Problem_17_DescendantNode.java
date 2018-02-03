@@ -39,6 +39,33 @@ public class Problem_17_DescendantNode {
 		return node;
 	}
 
+	
+	
+	//QWL
+	public static Node getNextNode2(Node node) {
+		if(node == null){
+			return null;
+		}
+		Node par = node.parent;
+		if(node.right != null){
+			return node.right;
+		}else if(par == null){
+			return null;
+		}else if(par.left == node){
+			return par;
+		}else{
+			while(par.parent != null){
+				Node p = par.parent;
+				if(p.left == par){
+					return p;
+				}
+				par = p;
+			}
+		}
+		return null;
+	}
+	
+	
 	public static void main(String[] args) {
 		Node head = new Node(6);
 		head.parent = null;
@@ -81,6 +108,29 @@ public class Problem_17_DescendantNode {
 		System.out.println(test.value + " next: " + getNextNode(test).value);
 		test = head.right.right; // 10's next is null
 		System.out.println(test.value + " next: " + getNextNode(test));
+	
+		System.out.println("============================");
+		
+		test = head.left.left;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.left.left.right;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.left;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.left.right;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.left.right.right;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.right.left.left;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.right.left;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.right;
+		System.out.println(test.value + " next: " + getNextNode2(test).value);
+		test = head.right.right; // 10's next is null
+		System.out.println(test.value + " next: " + getNextNode2(test));
 	}
 
 }

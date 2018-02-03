@@ -125,6 +125,73 @@ public class Problem_09_PrintBinaryTreeByLevelAndZigZag {
 		return buf.toString();
 	}
 
+	// QWL
+	public static void printByLevelQWL(Node head) {
+		LinkedList<Node> queue = new LinkedList<>();
+		int level = 0;
+		int num = 0;
+		queue.add(head);
+		while (!queue.isEmpty()) {
+			if (num == 0) {
+				System.out.println();
+				level++;
+				num = queue.size();
+				System.out.print("Level " + level + ": ");
+			}
+			Node temp = queue.pollFirst();
+			System.out.print(temp.value + " ");
+			num--;
+			if(temp.left != null){
+				queue.add(temp.left);
+			}
+			if(temp.right != null){
+				queue.add(temp.right);
+			}
+		}
+		System.out.println();
+	}
+	
+	public static void printByZigZagQWL(Node head) {
+		LinkedList<Node> queue = new LinkedList<>();
+		int level = 0;
+		int num = 0;
+		queue.add(head);
+		while (!queue.isEmpty()) {
+			if (num == 0) {
+				System.out.println();
+				level++;
+				num = queue.size();
+				if(level % 2 != 0){
+					System.out.print("Level " + level + " from left to right ");
+				}else{
+					System.out.print("Level " + level + " from right to left ");
+				}
+				
+			}
+			if(level % 2 != 0){
+				Node temp =queue.pollFirst();
+				if(temp.left != null){
+					queue.add(temp.left);
+				}
+				if(temp.right != null){
+					queue.add(temp.right);
+				}
+				System.out.print(temp.value + " ");
+			}else{
+				Node temp =queue.pollLast();
+				if(temp.right != null){
+					queue.addFirst(temp.right);
+				}
+				if(temp.left != null){
+					queue.addFirst(temp.left);
+				}
+				System.out.print(temp.value + " ");
+			}
+			num--;
+		}
+		System.out.println();
+	}
+
 	public static void main(String[] args) {
 		Node head = new Node(1);
 		head.left = new Node(2);
@@ -139,9 +206,16 @@ public class Problem_09_PrintBinaryTreeByLevelAndZigZag {
 
 		System.out.println("===============");
 		printByLevel(head);
+		
+		System.out.println("===============");
+		printByLevelQWL(head);
+		
 
 		System.out.println("===============");
 		printByZigZag(head);
+		
+		System.out.println("===============");
+		printByZigZagQWL(head);
 
 	}
 

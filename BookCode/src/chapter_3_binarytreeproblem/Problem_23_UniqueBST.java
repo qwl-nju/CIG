@@ -94,11 +94,57 @@ public class Problem_23_UniqueBST {
 		return buf.toString();
 	}
 
+	// QWL
+	public static int numTrees2(int n) {
+		if (n < 1) {
+			return 1;
+		}
+		int res = 0;
+		for (int i = 1; i <= n; i++) {
+			res += numTrees2(i - 1) * numTrees2(n - i);
+		}
+		return res;
+	}
+
+	public static List<Node> generateTrees2(int n) {
+		return isHelpGenerateTrees2(1, n);
+
+	}
+
+	public static List<Node> isHelpGenerateTrees2(int start, int end) {
+		List<Node> res = new LinkedList<>();
+		if (start > end) {
+			res.add(null);
+			return res;
+		}
+		for (int i = start; i <= end; i++) {
+			Node head = new Node(i);
+			List<Node> ln = isHelpGenerateTrees2(start, i - 1);
+			List<Node> rn = isHelpGenerateTrees2(i + 1, end);
+			for (Node left : ln) {
+				for (Node right : rn) {
+					head.left = left;
+					head.right = right;
+					res.add(cloneTree(head));
+				}
+			}
+		}
+		return res;
+	}
+
 	public static void main(String[] args) {
 		int n = 4;
 		System.out.println(numTrees(n));
+		System.out.println(numTrees2(n));
+
 		List<Node> res = generateTrees(n);
 		for (Node node : res) {
+			printTree(node);
+		}
+		System.out.println("============================");
+
+		List<Node> res2 = generateTrees2(n);
+		for (Node node : res2) {
 			printTree(node);
 		}
 	}

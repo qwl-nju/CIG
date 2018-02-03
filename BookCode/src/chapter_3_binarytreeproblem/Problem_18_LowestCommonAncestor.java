@@ -179,6 +179,21 @@ public class Problem_18_LowestCommonAncestor {
 		return buf.toString();
 	}
 
+	// QWL
+	// 原问题
+	public static Node lowestAncestor2(Node head, Node o1, Node o2) {
+		if (head == null || head == o1 || head == o2) {
+			return head;
+		}
+		Node left = lowestAncestor2(head.left, o1, o2);
+		Node right = lowestAncestor2(head.right, o1, o2);
+		if (left != null && right != null) {
+			return head;
+		}
+		return left == null ? right : left;
+
+	}
+
 	public static void main(String[] args) {
 		Node head = new Node(1);
 		head.left = new Node(2);
@@ -198,6 +213,7 @@ public class Problem_18_LowestCommonAncestor {
 		System.out.println("o1 : " + o1.value);
 		System.out.println("o2 : " + o2.value);
 		System.out.println("ancestor : " + lowestAncestor(head, o1, o2).value);
+		System.out.println("ancestor : " + lowestAncestor2(head, o1, o2).value);
 		System.out.println("===============");
 
 		// 生成map后方便多次查询--进阶问题

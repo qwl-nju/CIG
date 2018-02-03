@@ -1,6 +1,8 @@
 package chapter_1_stackandqueue;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Problem_07_SlidingWindowMaxArray {
 
@@ -26,6 +28,46 @@ public class Problem_07_SlidingWindowMaxArray {
 		return res;
 	}
 
+	// QWL
+	public static int[] getMaxWindow2(int[] arr, int w) {
+		if (arr == null || arr.length == 0) {
+			return arr;
+		}
+		int len = arr.length;
+		List<Integer> res = new ArrayList<>();
+		LinkedList<Integer> link = new LinkedList<>();
+		for (int i = 0; i < len; i++) {
+			while (true) {
+				if (link.size() == 0) {
+					link.addLast(i);
+					break;
+				} else if (arr[link.getLast()] > arr[i]) {
+					link.addLast(i);
+					break;
+				} else {
+					link.removeLast();
+				}
+			}
+			if (i >= w - 1) {
+				if (link.getFirst() > i - w) {
+					res.add(arr[link.getFirst()]);
+				} else {
+					link.removeFirst();
+					res.add(arr[link.getFirst()]);
+				}
+			}
+		}
+		if (res.isEmpty()) {
+			res.add(arr[link.getFirst()]);
+		}
+		int[] r = new int[res.size()];
+		for (int i = 0; i < r.length; i++) {
+			r[i] = res.get(i);
+		}
+		//System.out.println(r.length);
+		return r;
+	}
+
 	// for test
 	public static void printArray(int[] arr) {
 		for (int i = 0; i != arr.length; i++) {
@@ -35,9 +77,11 @@ public class Problem_07_SlidingWindowMaxArray {
 	}
 
 	public static void main(String[] args) {
-		int[] arr = { 4, 3, 5, 4, 3, 3, 6, 7 };
+		int[] arr = { 4, 3, 5, 4, 3, 3, 6, 7,6,0,2,1,5,6,7,3,-3,1,-7,-9,3,3,1,8,9 };
 		int w = 3;
 		printArray(getMaxWindow(arr, w));
+		System.out.println("============================");
+		printArray(getMaxWindow2(arr, w));
 
 	}
 

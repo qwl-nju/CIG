@@ -79,7 +79,7 @@ public class Problem_01_PreInPosTraversal {
 	}
 
 	public static void posOrderUnRecur1(Node head) {
-		System.out.print("pos-order: ");
+		System.out.print("pos-order1: ");
 		if (head != null) {
 			Stack<Node> s1 = new Stack<Node>();
 			Stack<Node> s2 = new Stack<Node>();
@@ -102,7 +102,7 @@ public class Problem_01_PreInPosTraversal {
 	}
 
 	public static void posOrderUnRecur2(Node h) {
-		System.out.print("pos-order: ");
+		System.out.print("pos-order2: ");
 		if (h != null) {
 			Stack<Node> stack = new Stack<Node>();
 			stack.push(h);
@@ -118,6 +118,57 @@ public class Problem_01_PreInPosTraversal {
 					h = c;
 				}
 			}
+		}
+		System.out.println();
+	}
+
+	// QWL
+
+	public static void preOrderUnRecurQWL(Node head) {
+		System.out.print("pre-order: ");
+		Stack<Node> stack = new Stack<>();
+		while (!stack.isEmpty() || head != null) {
+			while (head != null) {
+				System.out.print(head.value + " ");
+				stack.push(head);
+				head = head.left;
+			}
+			head = stack.pop();
+			head = head.right;
+		}
+		System.out.println();
+	}
+
+	public static void inOrderUnRecurQWL(Node head) {
+		System.out.print("in-order: ");
+		Stack<Node> stack = new Stack<>();
+		while (!stack.isEmpty() || head != null) {
+			while (head != null) {
+				stack.push(head);
+				head = head.left;
+			}
+			head = stack.pop();
+			System.out.print(head.value + " ");
+			head = head.right;
+		}
+		System.out.println();
+	}
+	
+	public static void posOrderUnRecurQWL(Node head) {
+		System.out.print("pos-order: ");
+		Stack<Node> stack = new Stack<>();
+		Stack<Node> res = new Stack<>();
+		while(!stack.isEmpty() || head != null){
+			while(head != null){
+				res.push(head);
+				stack.push(head);
+				head = head.right;
+			}
+			head = stack.pop();
+			head = head.left;
+		}
+		while(!res.isEmpty()){
+			System.out.print(res.pop().value+" ");
 		}
 		System.out.println();
 	}
@@ -153,6 +204,13 @@ public class Problem_01_PreInPosTraversal {
 		inOrderUnRecur(head);
 		posOrderUnRecur1(head);
 		posOrderUnRecur2(head);
+
+		// QWL
+		System.out.println("============QWL=============");
+		preOrderUnRecurQWL(head);
+		inOrderUnRecurQWL(head);
+		posOrderUnRecurQWL(head);
+		// posOrderUnRecur2(head);
 
 	}
 

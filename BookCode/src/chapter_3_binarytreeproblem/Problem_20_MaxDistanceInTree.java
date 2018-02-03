@@ -31,6 +31,27 @@ public class Problem_20_MaxDistanceInTree {
 		return Math.max(Math.max(lMax, rMax), curNodeMax);
 	}
 
+	// QWL
+	public static int maxDistance2(Node head) {
+		int[] re = new int[1];
+		return isHelpMaxDistance2(head, re);
+	}
+
+	public static int isHelpMaxDistance2(Node h, int[] re) {
+		if (h == null) {
+			re[0] = 0;
+			return 0;
+		}
+		int lmax = isHelpMaxDistance2(h.left, re);
+		int left = re[0];
+		int rmax = isHelpMaxDistance2(h.right, re);
+		int right = re[0];
+
+		re[0] = Math.max(left, right) + 1;
+
+		return Math.max(Math.max(lmax, rmax), left + right + 1);
+	}
+
 	public static void main(String[] args) {
 		Node head1 = new Node(1);
 		head1.left = new Node(2);
@@ -42,6 +63,7 @@ public class Problem_20_MaxDistanceInTree {
 		head1.left.left.left = new Node(8);
 		head1.right.left.right = new Node(9);
 		System.out.println(maxDistance(head1));
+		System.out.println(maxDistance2(head1));
 
 		Node head2 = new Node(1);
 		head2.left = new Node(2);
@@ -53,7 +75,7 @@ public class Problem_20_MaxDistanceInTree {
 		head2.right.left.left.left = new Node(8);
 		head2.right.right.right.right = new Node(9);
 		System.out.println(maxDistance(head2));
-
+		System.out.println(maxDistance2(head2));
 	}
 
 }

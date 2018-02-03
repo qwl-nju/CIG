@@ -1,7 +1,9 @@
 package chapter_3_binarytreeproblem;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Problem_15_IsBSTAndCBT {
 
@@ -104,17 +106,76 @@ public class Problem_15_IsBSTAndCBT {
 		return buf.toString();
 	}
 
+	// QWL
+	public static boolean isBST2(Node head) {
+		if (head == null) {
+			return true;
+		}
+		List<Node> list = new LinkedList<>();
+		Stack<Node> stack = new Stack<>();
+		while (!stack.isEmpty() || head != null) {
+			while (head != null) {
+				stack.push(head);
+				head = head.left;
+			}
+			head = stack.pop();
+			list.add(head);
+			head = head.right;
+		}
+		for (int i = 1; i < list.size(); i++) {
+			if (list.get(i).value < list.get(i - 1).value) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	public static boolean isCBT2(Node head) {
+		if(head == null){
+			return true;
+		}
+		LinkedList<Node> queue = new LinkedList<>();
+		boolean only = false;
+		queue.add(head);
+		while(!queue.isEmpty()){
+			Node h = queue.pollFirst();
+			if(h.right != null && h.left == null){
+				return false;
+			}
+			if(only){
+				if(h.right != null || h.left != null){
+					return false;
+				}
+			}
+			if(h.left == null || h.right == null){
+				only = true;
+			}
+			if(h.left != null){
+				queue.add(h.left);
+			}
+			if(h.right != null){
+				queue.add(h.right);
+			}
+		}
+		return true;
+	}
+
 	public static void main(String[] args) {
-		Node head = new Node(4);
-		head.left = new Node(2);
+		Node head = new Node(14);
+		head.left = new Node(22);
 		head.right = new Node(6);
 		head.left.left = new Node(1);
 		head.left.right = new Node(3);
-		head.right.left = new Node(5);
+		head.right.left = new Node(15);
+		head.right.left.left = new Node(15);
 
 		printTree(head);
 		System.out.println(isBST(head));
 		System.out.println(isCBT(head));
+		
+		System.out.println(isBST2(head));
+		System.out.println(isCBT2(head));
 
 	}
 }

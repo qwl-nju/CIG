@@ -38,6 +38,41 @@ public class Problem_24_CompleteTreeNodeNumber {
 		return level - 1;
 	}
 
+	// QWL
+	public static int nodeNum2(Node head) {
+		if (head == null) {
+			return 0;
+		}
+		int height = getHeight(head);
+
+		return bs2(head, 1, height);
+	}
+
+	public static int getHeight(Node head) {
+		int res = 0;
+		if (head == null) {
+			return res;
+		}
+		while (head != null) {
+			res++;
+			head = head.left;
+		}
+		return res;
+	}
+
+	public static int bs2(Node head, int le, int height) {
+		if (head == null) {
+			return 0;
+		}
+		int h = getHeight(head.right);
+		if (le + h == height) {
+			return (int) Math.pow(2, h) + bs(head.right, le + 1, height);
+		} else {
+			return (int) Math.pow(2, h) + bs(head.left, le + 1, height);
+		}
+
+	}
+
 	public static void main(String[] args) {
 		Node head = new Node(1);
 		head.left = new Node(2);
@@ -45,7 +80,12 @@ public class Problem_24_CompleteTreeNodeNumber {
 		head.left.left = new Node(4);
 		head.left.right = new Node(5);
 		head.right.left = new Node(6);
+		head.right.right = new Node(7);
+		head.left.left.left = new Node(8);
+		head.left.left.right = new Node(9);
 		System.out.println(nodeNum(head));
+		
+		System.out.println(nodeNum2(head));
 
 	}
 

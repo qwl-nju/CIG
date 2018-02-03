@@ -1,5 +1,7 @@
 package chapter_3_binarytreeproblem;
 
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
+
 public class Problem_07_BiggestSubBSTInTree {
 
 	public static class Node {
@@ -75,11 +77,50 @@ public class Problem_07_BiggestSubBSTInTree {
 		return buf.toString();
 	}
 
+	
+	public static Node biggestSubBSTQWL(Node head) {
+		if(head == null){
+			return head;
+		}
+		int[] r = new int[3];
+		return posOrderQWL(head, r);
+	}
+	
+	public static Node posOrderQWL(Node head, int[] record) {
+		if(head == null){
+			record[0] = 0;
+			record[1] = Integer.MAX_VALUE;
+			record[2] = Integer.MIN_VALUE;
+			return null;
+		}
+		
+		Node lNode = posOrderQWL(head.left, record);
+		int lnum = record[0];
+		int lmin = record[1];
+		int lmax = record[2];
+		
+		Node rNode = posOrderQWL(head.right, record);
+		int rnum = record[0];
+		int rmin = record[1];
+		int rmax = record[2];
+		
+		record[1] = Math.min(Math.min(lmin, head.value),rmin);
+		record[2] = Math.max(Math.max(rmax, head.value),lmax);
+		
+		if(lNode == head.left && rNode == head.right && lmax < head.value && rmin > head.value){
+			record[0] = lnum + rnum + 1;
+			return head;
+		}
+		
+		record[0] = lnum > rnum ? lnum : rnum;
+		return lnum > rnum ? lNode : rNode;
+	}
+	
 	public static void main(String[] args) {
 
 		Node head = new Node(6);
 		head.left = new Node(1);
-		head.left.left = new Node(0);
+		head.left.left = new Node(100);
 		head.left.right = new Node(3);
 		head.right = new Node(12);
 		head.right.left = new Node(10);
@@ -90,12 +131,16 @@ public class Problem_07_BiggestSubBSTInTree {
 		head.right.left.right.left = new Node(11);
 		head.right.left.right.right = new Node(15);
 		head.right.right = new Node(13);
-		head.right.right.left = new Node(20);
+		head.right.right.left = new Node(-20);
 		head.right.right.right = new Node(16);
 
 		printTree(head);
 		Node bst = biggestSubBST(head);
 		printTree(bst);
+		
+		Node bst2 = biggestSubBSTQWL(head);
+		printTree(bst2);
+		
 
 	}
 

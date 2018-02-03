@@ -1,6 +1,9 @@
 package chapter_3_binarytreeproblem;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Problem_06_LongestPathSum {
 
@@ -20,8 +23,8 @@ public class Problem_06_LongestPathSum {
 		return preOrder(head, sum, 0, 1, 0, sumMap);
 	}
 
-	public static int preOrder(Node head, int sum, int preSum, int level,
-			int maxLen, HashMap<Integer, Integer> sumMap) {
+	public static int preOrder(Node head, int sum, int preSum, int level, int maxLen,
+			HashMap<Integer, Integer> sumMap) {
 		if (head == null) {
 			return maxLen;
 		}
@@ -70,19 +73,49 @@ public class Problem_06_LongestPathSum {
 		return buf.toString();
 	}
 
+	// QWL
+	public static int getMaxLength2(Node head, int sum) {
+		int[] s = new int[1];
+		isHelpGetMaxLength2(head, 0, 0, sum, s);
+		return s[0];
+	}
+
+	public static void isHelpGetMaxLength2(Node head, int len, int now, int sum, int[] s) {
+		if (now == sum) {
+			s[0] = Math.max(s[0], len);
+		}
+		if (head == null) {
+			return;
+		}
+		// yao
+		isHelpGetMaxLength2(head.left, len + 1, now + head.value, sum, s);
+		isHelpGetMaxLength2(head.right, len + 1, now + head.value, sum, s);
+
+		// no
+		isHelpGetMaxLength2(head.left, 1, head.value, sum, s);
+		isHelpGetMaxLength2(head.right, 1, head.value, sum, s);
+
+	}
+
 	public static void main(String[] args) {
 		Node head = new Node(-3);
 		head.left = new Node(3);
 		head.right = new Node(-9);
 		head.left.left = new Node(1);
+		head.left.left.left = new Node(10);
+		head.left.left.right = new Node(-2);
 		head.left.right = new Node(0);
 		head.left.right.left = new Node(1);
 		head.left.right.right = new Node(6);
 		head.right.left = new Node(2);
 		head.right.right = new Node(1);
 		printTree(head);
-		System.out.println(getMaxLength(head, 6));
-		System.out.println(getMaxLength(head, -9));
+		
+		System.out.println(getMaxLength(head, 12));
+		System.out.println(getMaxLength(head, -10));
+		System.out.println("======================");
+		System.out.println(getMaxLength2(head, 12));
+		System.out.println(getMaxLength2(head, -10));
 
 	}
 

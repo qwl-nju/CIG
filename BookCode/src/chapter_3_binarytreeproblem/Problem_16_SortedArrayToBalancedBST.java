@@ -1,5 +1,7 @@
 package chapter_3_binarytreeproblem;
 
+import com.sun.corba.se.impl.oa.poa.AOMEntry;
+
 public class Problem_16_SortedArrayToBalancedBST {
 
 	public static class Node {
@@ -59,10 +61,30 @@ public class Problem_16_SortedArrayToBalancedBST {
 		}
 		return buf.toString();
 	}
+	
+	//QWL
+	public static Node generateTree2(int[] sortArr) {
+		if(sortArr == null){
+			return null;
+		}
+		return toBal(sortArr, 0, sortArr.length - 1);
+	}
+	
+	public static Node toBal(int[] arr, int left, int right){
+		if(left > right){
+			return null;
+		}
+		int mid = (left + right) / 2;
+		Node head = new Node(arr[mid]);
+		head.left = toBal(arr, left, mid - 1);
+		head.right = toBal(arr, mid + 1, right);
+		return head;
+	}
 
 	public static void main(String[] args) {
 		int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		printTree(generateTree(arr));
+		printTree(generateTree2(arr));
 
 	}
 

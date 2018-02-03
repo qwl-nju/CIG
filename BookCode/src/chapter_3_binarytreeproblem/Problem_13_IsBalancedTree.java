@@ -37,6 +37,41 @@ public class Problem_13_IsBalancedTree {
 		return Math.max(lH, rH);
 	}
 
+	
+	
+	
+	//QWL
+	public static boolean isBalance2(Node head) {
+		boolean[] res = new boolean[1];
+		res[0] = true;
+		isGetHeight(head, 1, res);
+		return res[0];
+		
+	}
+	
+	public static int isGetHeight(Node head, int level, boolean[] res){
+		if(head == null){
+			return level;
+		}
+		
+		int hLeft = isGetHeight(head.left, level + 1, res);
+		if(res[0] == false){
+			return level;
+		}
+		int hRight = isGetHeight(head.right, level + 1, res);
+		if(res[0] == false){
+			return level;
+		}
+		
+		if(Math.abs(hRight - hLeft) > 1){
+			res[0] = false;
+		}
+		
+		return Math.max(hRight, hLeft);
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		Node head = new Node(1);
 		head.left = new Node(2);
@@ -45,8 +80,12 @@ public class Problem_13_IsBalancedTree {
 		head.left.right = new Node(5);
 		head.right.left = new Node(6);
 		head.right.right = new Node(7);
+//		head.right.right.left = new Node(10);
+//		head.right.right.left.left= new Node(11);
 
 		System.out.println(isBalance(head));
+		
+		System.out.println(isBalance2(head));
 
 	}
 

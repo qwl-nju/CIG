@@ -130,6 +130,89 @@ public class Problem_04_SerializeAndReconstructTree {
 		return buf.toString();
 	}
 
+	public static String serialByPreQWL(Node head) {
+		StringBuilder res = new StringBuilder();
+		if(head == null){
+			res.append("#!");
+			return res.toString();
+		}
+		res.append(head.value + "!");
+		res.append(serialByPreQWL(head.left));
+		res.append(serialByPreQWL(head.right));
+		return res.toString();
+	}
+
+
+	public static Node reconByPreStringQWL(String preStr) {
+		if (preStr == null) {
+			return null;
+		}
+		String[] values = preStr.split("!");
+		LinkedList<String> queue = new LinkedList<>();
+		for (String value : values) {
+			queue.add(value);
+		}
+
+		return isHelpreconByPreStringQWL(queue);
+	}
+
+	public static Node isHelpreconByPreStringQWL(LinkedList<String> queue) {
+		if (queue == null || queue.isEmpty()) {
+			return null;
+		}
+		String h = queue.pollFirst();
+		if (h.equals("#")) {
+			return null;
+		}
+		Node head = new Node(Integer.parseInt(h));
+		head.left = isHelpreconByPreStringQWL(queue);
+		head.right = isHelpreconByPreStringQWL(queue);
+		return head;
+	}
+	
+	public static String serialByLevelQWL(Node head) {
+		StringBuilder res = new StringBuilder();
+		if(head == null){
+			return null;
+		}
+		LinkedList<Node> nodes = new LinkedList<>();
+		nodes.add(head);
+		while(!nodes.isEmpty()){
+			Node t = nodes.pollFirst();
+			if(t != null){
+				res.append(t.value+"!");
+				nodes.add(t.left);
+				nodes.add(t.right);
+			}else{
+				res.append("#!");
+			}
+		}
+		return res.toString();
+	}
+	
+	public static Node reconByLevelStringQWL(String levelStr) {
+		if(levelStr == null){
+			return null;
+		}
+		String[] values = levelStr.split("!");
+		Node[] nodes = new Node[values.length];
+		for(int i = 0; i < values.length; i++){
+			if(!values[i].equals("#")){
+				nodes[i] = new Node(Integer.parseInt(values[i]));
+			}else{
+				nodes[i] = null;
+			}
+		}
+		Node head = nodes[0];
+		for(int i = 0; i < nodes.length; i++){
+			if(nodes[i] != null){
+				nodes[i].left = i * 2 + 1 < nodes.length ? nodes[i * 2 + 1] : null;
+				nodes[i].right = i * 2 + 2 < nodes.length ? nodes[i * 2 + 2] : null;
+			}
+		}
+		return head;
+	}
+
 	public static void main(String[] args) {
 		Node head = null;
 		printTree(head);
@@ -208,5 +291,26 @@ public class Problem_04_SerializeAndReconstructTree {
 
 		System.out.println("====================================");
 
+		System.out.println("====================================");
+
+		head = new Node(100);
+		head.left = new Node(21);
+		head.left.left = new Node(37);
+		head.right = new Node(-42);
+		head.right.left = new Node(0);
+		head.right.right = new Node(666);
+		printTree(head);
+
+		pre = serialByPreQWL(head);
+		System.out.println("serialize tree by pre-order: " + pre);
+		head = reconByPreStringQWL(pre);
+		System.out.print("reconstruct tree by pre-order, ");
+		printTree(head);
+		
+		level = serialByLevelQWL(head);
+		System.out.println("serialize tree by level: " + level);
+		head = reconByLevelStringQWL(level);
+		System.out.print("reconstruct tree by level, ");
+		printTree(head);
 	}
 }

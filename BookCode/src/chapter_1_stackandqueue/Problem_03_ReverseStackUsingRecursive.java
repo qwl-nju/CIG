@@ -23,6 +23,40 @@ public class Problem_03_ReverseStackUsingRecursive {
 			return last;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//QWL
+	public static void reverse2(Stack<Integer> stack) {
+		if(stack.isEmpty()){
+			return;
+		}else{
+			int last = getAndRemoveLastElement2(stack);
+			reverse2(stack);
+			stack.push(last);
+		}
+	}
+	
+	public static int getAndRemoveLastElement2(Stack<Integer> stack) {
+		int res = stack.pop();
+		if(stack.isEmpty()){
+			return res;
+		}else{
+			int last = getAndRemoveLastElement2(stack);
+			stack.push(res);
+			return last;
+		}
+	}
 
 	public static void main(String[] args) {
 		Stack<Integer> test = new Stack<Integer>();
@@ -31,10 +65,32 @@ public class Problem_03_ReverseStackUsingRecursive {
 		test.push(3);
 		test.push(4);
 		test.push(5);
+		test.push(6);
+		test.push(7);
+		test.push(8);
+		
+		
 		reverse(test);
 		while (!test.isEmpty()) {
 			System.out.println(test.pop());
 		}
+		
+		System.out.println("=======================");
+		
+		test = new Stack<Integer>();
+		test.push(1);
+		test.push(2);
+		test.push(3);
+		test.push(4);
+		test.push(5);
+		test.push(6);
+		test.push(7);
+		test.push(8);
+		reverse2(test);
+		while (!test.isEmpty()) {
+			System.out.println(test.pop());
+		}
+		
 
 	}
 

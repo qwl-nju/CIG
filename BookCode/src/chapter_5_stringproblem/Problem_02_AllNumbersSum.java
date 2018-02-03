@@ -32,10 +32,47 @@ public class Problem_02_AllNumbersSum {
 		res += num;
 		return res;
 	}
+	
+	
+	
+	
+	//QWL
+	public static int numSum2(String str) {
+		if(str == null || str.length() == 0){
+			return 0;
+		}
+		int res = 0;
+		int len = str.length();
+		int f = 1;
+		for(int i = 0; i < len;){
+			if(str.charAt(i) <= '9' && str.charAt(i) >= '0'){
+				int t = 0;
+				while(i < len && str.charAt(i) <= '9' && str.charAt(i) >= '0'){
+					t = t * 10 + (str.charAt(i) - '0');
+					i++;
+				}
+				res += t * f;
+				f = 1;
+			}else if(str.charAt(i) == '-'){
+				int n = 0;
+				while(i < len && str.charAt(i) == '-'){
+					n++;
+					i++;
+				}
+				f = n % 2 == 0 ? 1 : -1;
+			}else{
+				f = 1;
+				i++;
+			}
+		}
+		return res;
+	}
 
 	public static void main(String[] args) {
-		String test = "1K-100ABC500D-T--100F200G!!100H---300";
+		String test = "1K-100ABC500D-T--100F200G!!100H---3001K-100ABC500D-T--100F200G!!100H---3001K-100ABC500D-T--100F200G!!100H---3001K-100ABC500D-T--100F200G!!100H---300";
 		System.out.println(numSum(test));
+		System.out.println("===========================");
+		System.out.println(numSum2(test));
 
 	}
 
